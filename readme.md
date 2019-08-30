@@ -37,15 +37,15 @@ Neste Metodo através da class da Model Post é possivel ter retorno do usuário
 Como chamar essa metodo:
 Na [view] usando um forelse para listar os post e o respectivo nome do usuário autor do post:
 
-<code>
-@forelse ($posts as $post)
-    .
-    .
-    {{$post->user->name}}
-@empty
- //
-@endforelse
-</code>
+<p><pre><code>
+    @forelse ($posts as $post)
+        .
+        .
+        {{$post->user->name}}
+    @empty
+     //
+    @endforelse
+</code></pre></p>
 
 Acessem a Documentação para mais detalhes sobre. [Laravel documentation](https://laravel.com/docs/5.8/eloquent-relationships).
 
