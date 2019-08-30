@@ -33,7 +33,8 @@ Verifiquem os arquivos que foram atualizados:
         return $this->belongsTo(User::class);
     }
     
-    </code></pre></p>
+   </code></pre></p>
+    
 Neste Metodo através da class da Model Post é possivel ter retorno do usuário que fez o post.
 
 Como chamar essa metodo:
