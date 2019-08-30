@@ -21,15 +21,19 @@ Verifiquem os arquivos que foram atualizados:
  - App\Models\Post.php ele já está pronto para uso, observem os metódos novos que foram criados, referente a relationships [Relacionamentos de tabelas], também fiz alterações nas models de User.php e Category.php.
  
  [Exemplo: App\Models\Post.php]
-  /**
+ <p>
+    <pre><code>
+
+   /**
      * Retornar o usuário do post./
-   */    
-   <code>
+   */
+   
     public function user()
     {
         return $this->belongsTo(User::class);
     }
-    </code>
+    
+    </code></pre>
 Neste Metodo através da class da Model Post é possivel ter retorno do usuário que fez o post.
 
 Como chamar essa metodo:
