@@ -34,6 +34,13 @@
 			</li>
 
 			<li>
+			<a href="{{route('usuarios.index')}}">
+					<i class="fa fa-user" aria-hidden="true"></i>
+					Usuários
+				</a>
+			</li>
+
+			<li>
 				<a href="?pag=list">
 					<i class="fa fa-id-card" aria-hidden="true"></i>
 					Listagem

@@ -10,11 +10,13 @@
 <div class="content-din bg-white">
 
     <div class="form-search">
-        <form class="form form-inline">
-            <input type="text" name="nome" placeholder="Nome:" class="form-control">
-            <input type="text" name="email" placeholder="E-mail:" class="form-control">
+        <form class="form form-inline"  method="get" action="{{route('usuarios.search')}}" enctype="multipart/form-data">
 
-            <button class="btn btn-search">Pesquisar</button>
+            {{-- {{ csrf_field() }} --}}
+            <input type="text" name="pesquisa"  class="form-control">
+            {{-- <input type="text" name="email" placeholder="E-mail:" class="form-control"> --}}
+
+            <button type="submit" class="btn btn-default">Pesquisar</button>
         </form>
     </div>
 
@@ -52,9 +54,13 @@
 
     </table>
 
-    {{$users->links()}}
+    {{-- {{$users->links()}} --}}
 
-   
+    @if(isset($dataForm))
+        {{$users->appends(Request::only('pesquisa'))->links()}}
+            @else
+        {{$users->links()}}
+    @endif  
 
 </div><!--Content Dinâmico-->
 @endsection
