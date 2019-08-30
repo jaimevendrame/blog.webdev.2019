@@ -23,17 +23,14 @@ Verifiquem os arquivos que foram atualizados:
  [Exemplo: App\Models\Post.php]
  <p>
     <pre><code>
-
    /**
      * Retornar o usuário do post./
    */
-   
     public function user()
     {
         return $this->belongsTo(User::class);
     }
-    
-   </code></pre></p>
+  </code></pre></p>
     
 Neste Metodo através da class da Model Post é possivel ter retorno do usuário que fez o post.
 
