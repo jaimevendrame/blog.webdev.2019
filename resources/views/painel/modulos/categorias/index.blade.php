@@ -4,7 +4,7 @@
 @section('content')	
 
 <div class="title-pg">
-    <h1 class="title-pg">Listagem dos Usuários</h1>
+    <h1 class="title-pg">Listagem das Categorias</h1>
 </div>
 
 <div class="content-din bg-white">
@@ -19,7 +19,7 @@
     </div>
 
     <div class="class-btn-insert">
-        <a href="{{route('usuarios.create')}}" class="btn-insert">
+        <a href="{{route('categorias.create')}}" class="btn-insert">
             <span class="glyphicon glyphicon-plus"></span>
             Cadastrar
         </a>
@@ -38,19 +38,17 @@
     <table class="table table-striped">
         <tr>
             <th>Nome</th>
-            <th>E-mail</th>
-            <th>Biografia</th>
+            <th>Url</th>
             <th width="150">Ações</th>
         </tr>
 
-        @forelse ($users as $user)
+        @forelse ($datas as $data)
             <tr>
-            <td>{{ $user->name }}</td>
-            <td>{{ $user->email }}</td>
-            <td>{{ $user->biography }}</td>
+            <td>{{ $data->name }}</td>
+            <td>{{ $data->url }}</td>
             <td>
-                <a href="{{route('usuarios.show', $user->id)}}" class="btn btn-info btn-xs"><i class="fa fa-eye"></i></a>
-                <a href="{{route('usuarios.edit', $user->id)}}" class="btn btn-success btn-xs"><i class="fa fa-edit"></i></a>
+                <a href="{{route('categorias.show', $data->id)}}" class="btn btn-info btn-xs"><i class="fa fa-eye"></i></a>
+                <a href="{{route('categorias.edit', $data->id)}}" class="btn btn-success btn-xs"><i class="fa fa-edit"></i></a>
 
             </td>
             </tr>
@@ -65,9 +63,9 @@
     {{-- {{$users->links()}} --}}
 
     @if(isset($dataForm))
-        {{$users->appends(Request::only('pesquisa'))->links()}}
+        {{$datas->appends(Request::only('pesquisa'))->links()}}
     @else
-        {{$users->links()}}
+        {{$datas->links()}}
     @endif  
 
 </div><!--Content Dinâmico-->

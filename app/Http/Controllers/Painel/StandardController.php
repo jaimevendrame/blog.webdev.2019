@@ -4,23 +4,12 @@ namespace App\Http\Controllers\Painel;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\User;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
-class UserController extends Controller
-{
+class StandardController extends Controller
+{ 
+    
+    protected $totalpages = 15;
 
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
-    
-    protected $model;
-    protected $totalpages = 2;
-    
-    public function __construct(User $user)
-    {
-        $this->model = $user;
-    }
     /**
      * Display a listing of the resource.
      *
@@ -28,9 +17,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = $this->model->paginate($this->totalpages);
+        $datas = $this->model->paginate($this->totalpages);
 
-        return view('painel.modulos.usuarios.index',compact('users'));
+        return view("{$this->view}.index",compact('datas'));
     }
 
     /**
@@ -42,7 +31,7 @@ class UserController extends Controller
     {
 
         // $data =' ';
-        return view ('painel.modulos.usuarios.create-edit');
+        return view ("{$this->view}.create-edit");
 
     }
 
@@ -61,21 +50,19 @@ class UserController extends Controller
          $this->validate($request, $this->model->rules());
         //PEGANDO OS DADOS DO FORMULÁRIO
         $dataForm = $request->all();
-        //CRIPTOGRAFANDO A SENHA
-        $dataForm['password'] = bcrypt($dataForm['password']);
-
+       
         //Verificar se existe a imagem
         if ( $request->hasFile('image')){
             //pegar a imagem
             $image = $request->file('image');
             //Definir no nome da imagem
             $nameFile = uniqid(date('YmdHis')).'.'.$image->getClientOriginalExtension();
-            $upload = $image->storeAs('users', $nameFile);
+            $upload = $image->storeAs($this->upload['path'], $nameFile);
             if ( $upload )
                 $dataForm['image'] = $nameFile;
             else
                 return redirect()
-                    ->route('usuarios.create')
+                    ->route("{$this->route}.create")
                     ->withErrors(['errors' => 'Erro no upload da imagem'])
                     ->withInput();
         }
@@ -85,11 +72,11 @@ class UserController extends Controller
         //RETORNADO MENSAGEM PARA VIEW
            if($insert)
                return redirect()
-                   ->route('usuarios.index')
+                   ->route("{$this->route}.index")
                    ->with(['success'=>'Cadastro realizado com sucesso!']);
            else
                return redirect()
-                   ->route('usuarios.create')
+                   ->route("{$this->route}.create")
                    ->withErrors(['errors' => 'Falha ao cadastrar'])
                    ->withInput();
     }
@@ -105,7 +92,7 @@ class UserController extends Controller
         //Recuperar usuário
         $data = $this->model->find($id);
 
-        return view('painel.modulos.usuarios.show', compact('data'));
+        return view("{$this->view}.show", compact('data'));
     }
 
     /**
@@ -119,7 +106,7 @@ class UserController extends Controller
         //Recuperar usuário
         $data = $this->model->find($id);
  
-        return view('painel.modulos.usuarios.create-edit', compact('data'));
+        return view("{$this->view}.create-edit", compact('data'));
     }
 
     /**
@@ -141,8 +128,6 @@ class UserController extends Controller
         $dataForm = $request->all();
         
  
-         //CRIPTOGRAFANDO A SENHA
-         $dataForm['password'] = bcrypt($dataForm['password']);
  
          //Verificar se existe a imagem
         if ( $request->hasFile('image')){
@@ -157,13 +142,13 @@ class UserController extends Controller
                 $nameImage = $data->image;
             }
  
-             $upload = $image->storeAs('users', $nameImage);
+             $upload = $image->storeAs($this->upload['path'], $nameImage);
  
              if ( $upload )
                  $dataForm['image'] = $nameImage;
              else
                  return redirect()
-                     ->route('usuarios.index')
+                     ->route("{$this->route}.index")
                      ->withErrors(['errors' => 'Erro no upload da imagem'])
                      ->withInput();
          }
@@ -171,11 +156,11 @@ class UserController extends Controller
         $update = $data->update($dataForm);
         if($update)
             return redirect()
-                ->route('usuarios.index')
+                ->route("{$this->route}.index")
                 ->with(['success'=>'Alteração realizada com sucesso!']);
         else
             return redirect()
-                ->route('usuarios.update')
+                ->route("{$this->route}.update")
                 ->withErrors(['errors' => 'Falha ao editar'])
                 ->withInput(); 
     }
@@ -192,24 +177,15 @@ class UserController extends Controller
         $delete = $data->delete();
         if ($delete) {
             return redirect()
-                ->route("usuarios.index")
+                ->route("{$this->route}.index")
                 ->with(['success'=>"{$data->name} excluido com sucesso!"]);
         } else {
             return redirect()
-                ->route("usuarios.show")
+                ->route("{$this->route}.show")
                 ->withErrors(['errors'=>'Falha ao excluir!']);
         }
     }
 
-    public function search(Request $request)
-    {
-        //Recupera os dados do formulário
-        $dataForm = $request->get('pesquisa');
-        //Filtra os usuários
-        $users = $this->model
-            ->where('name', 'LIKE', "%{$dataForm}%")
-            ->orWhere('email', 'LIKE', "%{$dataForm}%")
-            ->paginate($this->totalpages);
-        return view("painel.modulos.usuarios.index", compact('users', 'dataForm'));
-    }
+
+
 }

@@ -41,9 +41,9 @@
 			</li>
 
 			<li>
-				<a href="?pag=list">
+				<a href="{{route('categorias.index')}}">
 					<i class="fa fa-id-card" aria-hidden="true"></i>
-					Listagem
+					Categorias
 				</a>
 			</li>
 
@@ -63,14 +63,33 @@
 		
 		<div class="dropdown user-dash">
 		  <div class="dropdown-toggle" id="dropDownCuston" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-		    <img src="{{url('painel/imgs/no-image.png')}}" alt="Jaime Vendrame" class="user-dashboard img-circle">
-		    <p class="user-name">Nome User</p>
-		    <span class="caret"></span>
+			 
+			@if ( isset(Auth::user()->image) )
+			
+			<img src='{{URL::asset('/assets/uploads/users/'.Auth::user()->image)}}' alt="{{Auth::user()->name}}" class="user-dashboard img-circle">
+			
+			@else 
+			
+				<img src="{{url('painel/imgs/no-image.png')}}" alt="Jaime Vendrame" class="user-dashboard img-circle">
+	
+			@endif
+		    <p class="user-name">{{Auth::user()->name}}</p>
+			<span class="caret"></span>
+			<a class="dropdown-item" href="{{ route('logout') }}"
+                                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                        {{ __('Logout') }}
+                                    </a>
+
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                        @csrf
+                                    </form>
 		  </div>
 		  <ul class="dropdown-menu dp-menu" aria-labelledby="dropDownCuston">
 		    <li><a href="#">Perfil</a></li>
 		    <li><a href="#">Logout</a></li>
 		  </ul>
+
 		</div>
 	</div><!--Top Dashboard-->
 
@@ -95,5 +114,7 @@
 
 	<!-- jS Bootstrap -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+	@stack('js')
 </body>
 </html>
